@@ -1,0 +1,176 @@
+<div class="row">
+	<div class="col-lg-6">
+		<nb-card> <nb-card-header>Create Device</nb-card-header> <nb-card-body>
+		<form [formGroup]="deviceFormGroup">
+
+			<div class="form-group">
+				<div class="col-xs-4">
+					<input type="text" class="form-control" 
+					pattern="[0-9a-z]*" maxlength="20"
+						formControlName="registrationId" placeholder="Registration ID*">
+						<div 
+						*ngIf="deviceFormGroup.controls['registrationId'].errors 
+						&& (deviceFormGroup.controls['registrationId'].dirty 
+						|| deviceFormGroup.controls['registrationId'].touched)"
+						 class="form-control form-control-danger">
+							<strong>Please enter a valid Registration ID</strong>
+							
+						</div>
+				</div>
+				<div class="alert alert-info">
+					<font size="2"><strong>Note: </strong>Registration ID value must be the
+						same NAME used to generate the X509 certifcates (public and private
+						key files).</font>
+				  </div>
+
+			</div>
+
+
+			<div class="form-group">
+				<div class="col-xs-4">
+					<textarea cols="30" rows="4" class="form-control "
+						formControlName="publicKey" placeholder="Public Key*"></textarea>
+						<div 
+						*ngIf="deviceFormGroup.controls['publicKey'].errors 
+						&& (deviceFormGroup.controls['publicKey'].dirty 
+						|| deviceFormGroup.controls['publicKey'].touched)"
+						 class="form-control form-control-danger">
+							<strong>Please enter a valid Public key</strong>
+						</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-4">
+					<input type="text" class="form-control"
+					pattern="[0-9]*"
+						formControlName="keepAlive" placeholder="Keep Alive*">
+						<div 
+						*ngIf="deviceFormGroup.controls['keepAlive'].errors 
+						&& (deviceFormGroup.controls['keepAlive'].dirty 
+						|| deviceFormGroup.controls['keepAlive'].touched)"
+						 class="form-control form-control-danger">
+							<strong>Please enter a valid keep alive frequency</strong>
+						</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-4">
+					<input type="text" class="form-control" 
+					pattern="[0-9a-zA-Z .-]*"
+					formControlName="topic"
+						placeholder="Orchestation topic*">
+						<div 
+						*ngIf="deviceFormGroup.controls['topic'].errors 
+						&& (deviceFormGroup.controls['topic'].dirty 
+						|| deviceFormGroup.controls['topic'].touched)"
+						 class="form-control form-control-danger">
+							<strong>Please enter a valid topic</strong>
+						</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-4">
+					<input type="text" class="form-control" 
+					pattern="[0-9a-zA-Z .-]*"
+					formControlName="queue"
+						placeholder="Telemetry queue*">
+						<div 
+						*ngIf="deviceFormGroup.controls['queue'].errors 
+						&& (deviceFormGroup.controls['queue'].dirty 
+						|| deviceFormGroup.controls['queue'].touched)"
+						 class="form-control form-control-danger">
+							<strong>Please enter a valid Telemetry queue</strong>
+						</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-4">
+					<input type="text" class="form-control" 
+					pattern="[0-9a-zA-Z://. ]*"
+					formControlName="url"
+						placeholder="Telemetry URL*">
+						<div 
+						*ngIf="deviceFormGroup.controls['url'].errors 
+						&& (deviceFormGroup.controls['url'].dirty 
+						|| deviceFormGroup.controls['url'].touched)"
+						 class="form-control form-control-danger">
+							<strong>Please enter a valid Telemetry URL</strong>
+						</div>
+				</div>
+
+			</div>
+
+
+			<div class="form-group mb-4">
+				<div class="form-row mb-4">
+					<div class="col">
+						<ng-multiselect-dropdown [placeholder]="'Choose image-mapped Capabilities*'"
+							formControlName="capabilitiesID"
+							[data]="capabilitiesDropdownList" [settings]="dropdownSettings"
+							(onSelect)="onItemSelect($event)"
+							(onSelectAll)="onSelectAll($event)"> </ng-multiselect-dropdown>
+					</div>
+					<!--
+					<div class="col">
+					</div>
+					-->
+					<div class="alert alert-danger"
+						*ngIf="deviceFormGroup.controls['capabilitiesID'].errors 
+      		&& (deviceFormGroup.controls['capabilitiesID'].dirty || deviceFormGroup.controls['capabilitiesID'].touched )">
+						<div
+							[hidden]="!deviceFormGroup.controls['capabilitiesID'].errors?.required">
+							<strong>Please select Capabilities</strong>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<br>
+			<div class="form-group mb-4">
+				<div class="form-row mb-4">
+					<div class="col-6">
+						<button type="button" class="btn btn-hero-primary btn-demo btn-block"
+							[disabled]="!deviceFormGroup.valid" 
+							(click)="enroll()">Enroll device</button>
+					</div>
+					<div class="col-6">
+						<button class="btn btn-hero-primary btn-block" (click)="onReset()">Reset</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		</nb-card-body> </nb-card>
+	</div>
+	<!--
+	<div class="col-lg-6">
+		<nb-card> <nb-card-header>List of Devices</nb-card-header> <nb-card-body>
+
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of devices; let i = index">
+						<td><a (click)="onDeviceClick(item.id)"><i
+								class="nb-edit"></i></a></td>
+						<td>{{item.id}}</td>
+						<td>{{item.name}}</td>
+						<td></td>
+					</tr>
+					
+
+				</tbody>
+			</table>
+		</div>
+		</nb-card-body> </nb-card>
+	</div>
+	-->
+
+</div>

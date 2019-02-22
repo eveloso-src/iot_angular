@@ -1,0 +1,47 @@
+h2 {
+    text-align: center;
+}
+div.run-details {
+    border: 2px solid rgb(5, 51, 47); 
+    margin: auto; 
+    padding: 10px; 
+    border-radius: 12px;
+}
+i.nb-alert {
+    font-size: 4em;
+    color: darkgoldenrod;
+}
+i.nb-checkmark {
+    font-size: 4em; 
+    color: greenyellow;
+}
+i.nb-close-circled {
+    font-size: 4em; 
+    color: red;
+}
+i.nb-loop {
+    font-size: 4em; 
+    color: darkturquoise;
+}
+div.run-results {
+    border: 2px solid rgb(5, 51, 47); 
+    margin: auto; 
+    padding: 10px; 
+    border-radius: 12px;
+}
+div.step-success {
+    border: 2px solid green; 
+    margin: auto; 
+    padding: 10px; 
+    border-radius: 12px; 
+    border: 6px solid green;
+    border-style: dotted;
+}
+div.step-failure {
+    border: 2px solid red; 
+    margin: auto; 
+    padding: 10px; 
+    border-radius: 12px; 
+    border: 6px solid red;
+    border-style: dotted;
+}

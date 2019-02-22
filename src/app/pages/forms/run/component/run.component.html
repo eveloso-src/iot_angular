@@ -1,0 +1,125 @@
+<div class="row">
+	<div class="col-lg-6">
+		<nb-card> <nb-card-header>Run</nb-card-header> <nb-card-body>
+		<form [formGroup]="runForm">
+
+			<div class="form-group">
+					<ng-multiselect-dropdown [placeholder]="'Pipeline*'"
+						formControlName="pipeline" [data]="pipelineDropdownList"
+						[settings]="pipelineDropdownSettings" (onSelect)="onPipelineSelect($event)"
+						(onDeSelect)="onPipelineDeSelect($event)">
+          </ng-multiselect-dropdown>
+          
+          <div class="form-control form-control-danger" *ngIf="runForm.controls['pipeline'].errors && 
+          (runForm.controls['pipeline'].dirty || runForm.controls['pipeline'].touched)">
+            <div [hidden]="!runForm.controls['pipeline'].errors.required">
+						  <strong>Please select Pipeline</strong>
+					  </div>
+				  </div>
+			</div>
+
+		<div class="form-group">
+			<div *ngIf="showOnPipelineSelect" style="border: 2px solid orange; border-radius: 5px; margin: auto; padding: 10px;">
+				<font>Do you want to change Args for any step? </font><br><br>
+						<div class="form-check-inline">
+							<label class="form-check-label">
+							  <input type="radio" class="form-check-input" name="argsRadio" 
+							  value="Yes" (change)="radioToggle($event)">Yes
+							</label>
+						</div>
+						<div class="form-check-inline">
+							<label class="form-check-label">
+							  <input type="radio" class="form-check-input" name="argsRadio" 
+							  value="No" (change)="radioToggle($event)" checked>No
+							</label>
+						</div>
+			</div>
+			<div *ngIf="showSteps">
+				<ng-multiselect-dropdown [placeholder]="'Step'"
+						formControlName="step" [data]="stepDropdownList"
+						[settings]="stepDropdownSettings" (onSelect)="onStepSelect($event)"
+						(onDeSelect)="onStepDeSelect($event)">
+        		</ng-multiselect-dropdown>
+			</div>
+		</div>
+
+		<div class="form-group" id="argsElement">
+			<div *ngIf="showArgs">
+			<div class="row" formArrayName="args">
+				<div class="col-md-12"
+					*ngFor="let address of getArgs(runForm) ; let i = index">
+					<div class="row">
+						<div class="col-md-11">
+							<span>Arg {{i+1}} </span>
+						</div>
+						<div class="col-md-1">
+							<span *ngIf="getArgs(runForm).length > 1"
+								(click)="removeArgs(i)" class="close">&times;</span>
+						</div>
+					</div>
+					<div [formGroupName]="i" class="row">
+						<div class="col-md-6">
+
+							<input type="text" class="form-control" formControlName="key"
+								placeholder="Key">
+
+						</div>
+						<div class="col-md-6">
+
+							<input type="text" class="form-control" formControlName="value"
+								placeholder="Value">
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<a (click)="addArgs()" class="point"> <strong> Add
+							another argument </strong>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+					<div class="col-md-6"></div>
+					<div class="col-md-6">
+							<button class="btn btn-outline-warning btn-hero btn-sm btn-block" 
+							(click)="saveArgs()"><strong>Save Args for {{argsSaveButton}}</strong></button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<input type="text" class="form-control" readonly="readonly"
+				formControlName="version" placeholder="Version*" (click)="getVersion()" />
+			<div class="form-control form-control-danger"
+				*ngIf="!runForm.controls['version'].valid && runForm.controls['version'].touched ">
+				<strong>Please enter Version</strong>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<input type="text" placeholder="Submitted By" formControlName="submittedBy" class="form-control" [pattern]="runPattern" />
+			<div class="form-control form-control-danger" *ngIf="runForm.controls['submittedBy'].errors?.pattern">
+				<strong>Use Alphabets only</strong>
+			</div>
+		</div>
+
+			<div class="form-group">
+				<div class="form-row">
+					<div class="col-6">
+						<button class="btn btn-hero-primary btn-block" 
+						[disabled]="runForm.invalid" (click)="onRun()">Run</button>
+					</div>
+					<div class="col-6">
+						<button class="btn btn-hero-primary btn-block" (click)="onReset()">Reset</button>
+					</div>
+				</div>
+			</div>
+
+			<ngx-ui-loader></ngx-ui-loader>
+		</form>
+		</nb-card-body> </nb-card>
+	</div>
+</div>

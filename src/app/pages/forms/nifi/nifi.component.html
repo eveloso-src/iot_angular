@@ -1,0 +1,34 @@
+<div class="row">
+	<div class="col-lg-6">
+		<nb-card> <nb-card-header>Nifi Component</nb-card-header> <nb-card-body>
+		<form [formGroup]="nifiFormGroup">
+
+			<div class="form-group">
+				<div class="col-xs-4">
+					<textarea cols="30" rows="4" class="form-control "
+						formControlName="match" placeholder="Payload match* (condition)"></textarea>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-xs-4">
+					<textarea cols="30" rows="4" class="form-control "
+						formControlName="replace" placeholder="Replace"></textarea>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-xs-4">
+					<input type="text" class="form-control " formControlName="topic"
+						placeholder="Topic*">
+				</div>
+			</div>
+			<br>
+			<div class="container-btn">
+				<button class="btn btn-hero-primary btn-demo">Create</button>
+			</div>
+		</form>
+		</nb-card-body></nb-card>
+	</div>
+
+</div>

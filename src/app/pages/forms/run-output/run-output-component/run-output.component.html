@@ -1,0 +1,190 @@
+<div class="row">
+	<div class="col-lg-12">
+		<nb-card> <nb-card-header>Run Output</nb-card-header> <nb-card-body>
+            <div class="dropdown">
+					<ng-multiselect-dropdown [placeholder]="'Select a Run ID*'" [data]="runDropdownList"
+						[settings]="runDropdownSettings" (onSelect)="onRunSelect($event)"
+                        (onDeSelect)="onRunDeSelect($event)">
+                    </ng-multiselect-dropdown>
+                </div><br><br>
+      
+      <!-- <div *ngIf="!areValuesAvailable">
+        <div class="row">&nbsp;&nbsp;</div>
+        <div class="row">&nbsp;&nbsp;</div>
+        <div class="row">&nbsp;&nbsp;</div>
+        <div class="row">&nbsp;&nbsp;</div>
+        <div class="row">&nbsp;&nbsp;</div>
+      </div> -->
+      
+      <form [formGroup]="runResultForm">
+          <div class="form-group">
+              <div class="form-row">
+                    <div class="col-3">
+                        <h4>Alternate:</h4>
+                    </div>
+              </div>
+              <div class="form-row">
+                  <div class="col-9">
+                      <input type="text" placeholder="*Enter Run ID*" formControlName="runid" class="form-control" [pattern]="runidPattern" />
+                      <div class="form-control form-control-danger" *ngIf="runResultForm.controls['runid'].errors?.pattern">
+                          <strong>Only Numerics allowed</strong>
+                        </div>
+                    </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-hero-primary btn-block" [disabled] = "runResultForm.invalid"
+						(click)="onGetResult()" >Get Result</button>
+                </div>
+                </div>
+            </div>
+        </form>
+
+      <div *ngIf="areValuesAvailable">
+
+        <h2>Run Details</h2>
+        <div class="run-details">
+        <div class="row">
+          <div class="col-sm-3">
+            <pre><h5>Run id : </h5><h6>{{selectedRunOutput?.run_id}}</h6></pre>
+          </div>
+          <div class="col-sm-3">
+            <pre><h5>Pipeline id : </h5><h6>{{selectedRunOutput?.pipeline_id}}</h6></pre>
+          </div>
+          <div class="col-sm-3">
+            <pre><h5>Submission time : </h5><h6>{{selectedRunOutput?.submission_time | date:'medium'}}</h6></pre>
+            </div>
+          <div class="col-sm-3">
+              <pre><h5>Submitted by : </h5><h6>{{selectedRunOutput?.submitted_by}}</h6></pre>
+          </div>
+
+          <div class="col-sm-3"></div>
+          <div class="col-sm-3">
+              <h5>Run status : </h5>
+              <h6>{{selectedRunOutput?.run_status}}</h6>
+          </div>
+          <div class="col-sm-3">
+            <i class="nb-alert" *ngIf="selectedRunOutput.run_status == 'NOT_STARTED'"></i>
+            <i class="nb-checkmark" *ngIf="selectedRunOutput.run_status == 'SUCCESS'"></i>
+            <i class="nb-close-circled" *ngIf="selectedRunOutput.run_status == 'ERROR'"></i>
+            <i class="nb-loop" *ngIf="selectedRunOutput.run_status == 'RUNNING'"></i> 
+          </div>
+           
+        </div>
+        </div><br><br>
+
+        <h2>Run Results</h2>
+        <div class="run-results" *ngFor="let step of selectedRunOutput.run_results">
+          <div class="row">
+            <div class="col-sm-3">
+                <h5>Step id : </h5><h6>{{step.stepId}}</h6>
+            </div>
+            <div class="col-sm-3">
+                <h5>Step name : </h5><h6>{{step.step_name}}</h6>
+            </div>
+            <div class="col-sm-3">
+                <h5>Step type : </h5><h6>{{step.step_type}}</h6>
+            </div>
+            <div class="col-sm-3">
+                <h5>Step status : </h5><h6>{{step.step_status}}</h6>
+            </div>  
+          </div>
+          <div *ngFor="let device of step.device_step_result"><br>
+          <div class="row">
+              <div class="col-sm-3">
+                  <h5>Device Details : </h5>
+              </div>
+              <div class="col-sm-3">
+                  <h5>Device id : </h5><h6>{{device.device_id}}</h6>
+              </div>
+              <div class="col-sm-3">
+                  <h5>Device status : </h5><h6>{{device.status}}</h6>
+              </div> 
+          </div>
+          <div class="row">
+              <div class="col-sm-12">
+                <h5>Messages : </h5>
+                <li *ngFor="let message of device.messages">{{message}}</li>
+              </div> 
+          </div>
+        </div>
+
+
+        <div *ngIf="step.step_type === 'evaluation' && (step.success.length > 0 || step.failure.length > 0)"><br>
+          <div class="step-success" *ngFor="let success of step.success">
+              <div class="row">
+                  <div class="col-sm-3">
+                      <h5>Success step id : </h5><h6>{{success.stepId}}</h6>
+                  </div>
+                  <div class="col-sm-3">
+                      <h5>Success step name : </h5><h6>{{success.step_name}}</h6>
+                  </div>
+                  <div class="col-sm-3">
+                      <h5>Success step type : </h5><h6>{{success.step_type}}</h6>
+                  </div>
+                  <div class="col-sm-3">
+                      <h5>Success step status : </h5><h6>{{success.step_status}}</h6>
+                  </div>  
+                </div>
+                <div *ngFor="let successDevice of success.device_step_result"><br>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h5>Success device Details : </h5>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Success device id : </h5><h6>{{successDevice.device_id}}</h6>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Success device status : </h5><h6>{{successDevice.status}}</h6>
+                    </div> 
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                      <h5>Success messages : </h5>
+                      <li *ngFor="let message of successDevice.messages">{{message}}</li>
+                    </div> 
+                </div>
+              </div>
+          </div>
+          <br>
+          <div class="step-failure" *ngFor="let failure of step.failure">
+              <div class="row">
+                  <div class="col-sm-3">
+                      <h5>Failure step id : </h5><h6>{{failure.stepId}}</h6>
+                  </div>
+                  <div class="col-sm-3">
+                      <h5>Failure step name : </h5><h6>{{failure.step_name}}</h6>
+                  </div>
+                  <div class="col-sm-3">
+                      <h5>Failure step type : </h5><h6>{{failure.step_type}}</h6>
+                  </div>
+                  <div class="col-sm-3">
+                      <h5>Failure step status : </h5><h6>{{failure.step_status}}</h6>
+                  </div>  
+                </div>
+                <div *ngFor="let failureDevice of failure.device_step_result"><br>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h5>Failure device Details : </h5>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Failure device id : </h5><h6>{{failureDevice.device_id}}</h6>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Failure device status : </h5><h6>{{failureDevice.status}}</h6>
+                    </div> 
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                      <h5>Failure messages : </h5>
+                      <li *ngFor="let message of failureDevice.messages">{{message}}</li>
+                    </div> 
+                </div>
+              </div>
+          </div>
+        </div>
+
+        </div>
+      </div>
+  </nb-card-body> </nb-card>
+</div>
+</div>
+

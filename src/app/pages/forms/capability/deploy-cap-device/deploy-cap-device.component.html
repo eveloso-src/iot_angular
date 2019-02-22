@@ -1,0 +1,91 @@
+<environmental-capability></environmental-capability>
+<div class="row">
+	<div class="col-lg-6">
+		<nb-card> <nb-card-header>Deploy Capability
+		to Device</nb-card-header> <nb-card-body>
+		<form [formGroup]="deployCapDeviceForm">
+			<div class="form-group">
+				
+					<ng-multiselect-dropdown [placeholder]="'Capabilities*'"
+						formControlName="capabilities" [data]="capDropdownList"
+						[settings]="capDropdownSettings" (onSelect)="onItemSelect($event)">
+					</ng-multiselect-dropdown>
+				
+				<div class="form-control form-control-danger"
+					*ngIf="deployCapDeviceForm.controls['capabilities'].errors && (deployCapDeviceForm.controls['capabilities'].dirty || deployCapDeviceForm.controls['capabilities'].touched)">
+					<div
+						[hidden]="!deployCapDeviceForm.controls['capabilities'].errors.required">
+						<strong>Please select Capability</strong>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				
+					<ng-multiselect-dropdown [placeholder]="'Device Definition*'"
+						formControlName="deviceDef" [data]="DdefDropdownList"
+						[settings]="DdefDropdownSettings"
+						(onSelect)="onItemSelect($event)"> </ng-multiselect-dropdown>
+				
+				<div class="form-control form-control-danger"
+					*ngIf="deployCapDeviceForm.controls['deviceDef'].errors && (deployCapDeviceForm.controls['deviceDef'].dirty || deployCapDeviceForm.controls['deviceDef'].touched)">
+					<div
+						[hidden]="!deployCapDeviceForm.controls['deviceDef'].errors.required">
+						<strong>Please select Device Definition</strong>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="form-row">
+					<div class="col-6">
+						<button class="btn btn-hero-primary btn-block" 
+						[disabled]="!deployCapDeviceForm.valid" (click)="onDeployCap()">Deploy</button>
+					</div>
+					<div class="col-6">
+						<button class="btn btn-hero-primary btn-block" (click)="onReset()">Reset</button>
+					</div>
+				</div>
+			</div>
+			<ngx-ui-loader></ngx-ui-loader>
+		</form>
+		</nb-card-body> </nb-card>
+	</div>
+</div>
+
+
+
+
+<!-- <div class="row">
+	<div class="col-lg-6">
+		<nb-card> <nb-card-header>List of Environmental Capabilities</nb-card-header>
+		<nb-card-body>
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Type</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td><a href="#"><i class="nb-edit"></i></a></td>
+						<th class="text-nowrap" scope="row">1</th>
+						<td>amd64</td>
+						<td>Hardware</td>
+					</tr>
+					<tr>
+						<td><a href="#"><i class="nb-edit"></i></a></td>
+						<th class="text-nowrap" scope="row">2</th>
+						<td>Ubuntu</td>
+						<td>Software</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</nb-card-body>
+		</nb-card>
+	</div>
+</div> -->

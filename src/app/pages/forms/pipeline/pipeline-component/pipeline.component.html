@@ -1,0 +1,95 @@
+<div class="row">
+	<div class="col-lg-6">
+		<nb-card>
+		<nb-card-header>Create Pipeline</nb-card-header>
+		<nb-card-body>
+		<form [formGroup]="pipelineCreationForm">
+
+			<div class="form-group">
+				<input type="text" placeholder="Pipeline Name*" formControlName="name" class="form-control" [pattern]="pipelinePattern" />
+					<div *ngIf="!pipelineCreationForm.controls['name'].valid && (pipelineCreationForm.controls['name'].touched || pipelineCreationForm.controls['name'].dirty)" >   
+                   		<div class="form-control form-control-danger" *ngIf="pipelineCreationForm.controls['name'].errors.required">
+                        	<strong>Please enter Pipeline Name</strong> 
+                   		</div> 
+                   		<div class="form-control form-control-danger" *ngIf="pipelineCreationForm.controls['name'].errors?.pattern">
+                       		<strong>Use alphaNumeric characters, spaces and dashes(_,-)</strong> 
+                  		</div> 
+                	</div>
+			</div>
+			<div class="form-group">
+				<input type="text" placeholder="Description" formControlName="description" class="form-control" [pattern]="pipelinePattern" />
+				<div class="form-control form-control-danger" *ngIf="pipelineCreationForm.controls['description'].errors?.pattern">
+                	<strong>Use alphaNumeric characters, spaces and dashes(_,-)</strong>
+                </div>
+			</div>
+			<div class="form-group">
+				<input type="text" placeholder="Project" formControlName="project" class="form-control" [pattern]="pipelinePattern"  />
+				<div class="form-control form-control-danger" *ngIf="pipelineCreationForm.controls['project'].errors?.pattern">
+                	<strong>Use alphaNumeric characters, spaces and dashes(_,-)</strong>
+                </div>
+	
+			</div>
+			<div class="form-group">
+				<input type="text" placeholder="Note" formControlName="note" class="form-control" [pattern]="pipelinePattern" />
+				<div class="form-control form-control-danger" *ngIf="pipelineCreationForm.controls['note'].errors?.pattern">
+                	<strong>Use alphaNumeric characters, spaces and dashes(_,-)</strong>
+                </div>
+			</div>
+			<div class="form-group">
+				<input type="text" placeholder="Author*" formControlName="author" class="form-control" [pattern]="pipelinePattern" />
+				<div *ngIf="!pipelineCreationForm.controls['author'].valid && (pipelineCreationForm.controls['author'].touched || pipelineCreationForm.controls['author'].dirty)" >   
+               		<div class="form-control form-control-danger" *ngIf="pipelineCreationForm.controls['author'].errors.required">
+                    	<strong>Please enter Author</strong> 
+               		</div> 
+               		<div class="form-control form-control-danger" *ngIf="pipelineCreationForm.controls['author'].errors?.pattern">
+                   		<strong>Use alphaNumeric characters, spaces and dashes(_,-)</strong> 
+              		</div> 
+              	</div>
+			</div>
+			
+			
+			<div class="form-group">
+				<div class="form-row">
+					<div class="col" *ngFor="let entry of entries">
+						<label>
+							<input type="checkbox" name="check" formControlName="checkbox" [checked]="idx === 0" [value]="entry.id" (change)="toggleVisibility($event)">
+							<span class="custom-control-indicator"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+							<span class="custom-control-description"><span class="font-w-regular">{{entry.type}}</span></span>
+						</label>
+					</div>
+					<div class="col-1">
+						<i class="ion-information-circled" style="font-size: 18px;" nbPopover="Tip: Please select atleast one step" nbPopoverMode="hint"></i>
+					</div>
+				</div>
+			</div>
+
+
+          	<ngbd-modal-basic ></ngbd-modal-basic>
+			<div class="form-group mb-4" *ngIf="selectedRecipeType">
+				<ng-multiselect-dropdown  [placeholder]="'Choose Recipe'" formControlName="recipeSteps" [data]="stepsRecipeDropdownList"
+				 [settings]="dropdownSettings" (onSelect)="onRecipeItemSelect($event)" (onDeSelect)="onRecipeItemRemove($event)" >
+				</ng-multiselect-dropdown>
+			</div>
+			<div class="form-group mb-4" *ngIf="selectedEvalType">
+				<ng-multiselect-dropdown  [placeholder]="'Choose Evaluation'" formControlName="evaluationSteps" [data]="stepsEvaluationDropdownList"
+				 [settings]="dropdownSettings" (onSelect)="onEvalItemSelect($event)" (onDeSelect)="onEvalItemRemove($event)" >
+				</ng-multiselect-dropdown>
+			</div>
+			
+			<div class="form-group">
+				<div class="form-row">
+					<div class="col-6">
+							<button type="submit" class="btn btn-hero-primary btn-block" [disabled]="!pipelineCreationForm.valid" 
+							(click)="onCreatePipeline()" >Create</button>
+					</div>
+					<div class="col-6">
+						<button class="btn btn-hero-primary btn-block" (click)="onReset()">Reset</button>
+					</div>
+				</div>	
+            </div>
+		</form>
+		</nb-card-body> </nb-card>
+	</div>
+	<div class="col-lg-6">
+	</div>
+</div>

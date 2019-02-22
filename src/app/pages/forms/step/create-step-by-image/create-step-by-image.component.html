@@ -1,0 +1,235 @@
+<div class="row">
+	<div class="col-lg-6">
+		<nb-card> <nb-card-header>Create Step</nb-card-header> <nb-card-body>
+		<form [formGroup]="createStepForm">
+			<div class="form-group">
+				<input type="text" class="form-control" formControlName="name"
+					[pattern]="regexPattern" placeholder="Name*" />
+				<div
+					*ngIf="!createStepForm.controls['name'].valid && (createStepForm.controls['name'].touched || createStepForm.controls['name'].dirty)">
+					<div class="form-control form-control-danger"
+						*ngIf="createStepForm.controls['name'].errors.required">
+						<strong>Please enter Step Name</strong>
+					</div>
+					<div class="form-control form-control-danger"
+						*ngIf="createStepForm.controls['name'].errors?.pattern">
+						<strong>Use alphaNumeric characters, spaces and
+							dashes(_,-)</strong>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<ng-multiselect-dropdown [placeholder]="'Choose Type*'"
+					formControlName="stepType" [data]="stepTypeList"
+					[settings]="devicesDropdownSettings"
+					(onSelect)="onItemSelect($event)"> </ng-multiselect-dropdown>
+			</div>
+			<div class="form-control form-control-danger"
+				*ngIf="createStepForm.controls['stepType'].invalid && (createStepForm.controls['stepType'].dirty || createStepForm.controls['stepType'].touched )">
+				<div [hidden]="!createStepForm.controls['stepType'].errors.required">
+					<strong>Please select step Type</strong>
+				</div>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" formControlName="author"
+					[pattern]="regexPattern" placeholder="Author*" />
+				<div
+					*ngIf="!createStepForm.controls['author'].valid && (createStepForm.controls['author'].touched || createStepForm.controls['author'].dirty)">
+					<div class="form-control form-control-danger"
+						*ngIf="createStepForm.controls['author'].errors.required">
+						<strong>Please enter Author</strong>
+					</div>
+					<div class="form-control form-control-danger"
+						*ngIf="createStepForm.controls['author'].errors?.pattern">
+						<strong>Use alphaNumeric characters, spaces and
+							dashes(_,-)</strong>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="form-row">
+					<div class="col">
+						<ng-multiselect-dropdown [placeholder]="'Choose Capabilities*'"
+							formControlName="capabilities" [data]="capabilitiesDropdownList"
+							[settings]="capabilitiesDropdownSettings"
+							(onSelect)="onItemSelect($event)"> </ng-multiselect-dropdown>
+					</div>
+				</div>
+				<div class="form-control form-control-danger"
+					*ngIf="createStepForm.controls['capabilities'].errors && (createStepForm.controls['capabilities'].dirty || createStepForm.controls['capabilities'].touched )">
+					<div
+						[hidden]="!createStepForm.controls['capabilities'].errors.required">
+						<strong>Please select Capabilities</strong>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="form-row">
+					<div class="col">
+						<ng-multiselect-dropdown [placeholder]="'Choose Image*'"
+							formControlName="imageName" [data]="imagesDropdownList"
+							[settings]="imagesDropdownSettings"
+							(onSelect)="onImageNameSelect($event)"
+							(onDeSelect)="onImageNameDeSelect($event)">
+						</ng-multiselect-dropdown>
+					</div>
+				</div>
+				<div class="form-control form-control-danger"
+					*ngIf="createStepForm.controls['imageName'].errors && (createStepForm.controls['imageName'].dirty || createStepForm.controls['imageName'].touched )">
+					<div
+						[hidden]="!createStepForm.controls['imageName'].errors.required">
+						<strong>Please select Image</strong>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="form-row">
+					<div class="col">
+						<ng-multiselect-dropdown [placeholder]="'Choose Tag*'"
+							formControlName="imageTag" [data]="filteredTagName"
+							[settings]="devicesDropdownSettings"
+							(onSelect)="onItemSelect($event)"> </ng-multiselect-dropdown>
+					</div>
+				</div>
+				<div class="form-control form-control-danger"
+					*ngIf="createStepForm.controls['imageTag'].errors && (createStepForm.controls['imageTag'].dirty || createStepForm.controls['imageTag'].touched )">
+					<div
+						[hidden]="!createStepForm.controls['imageTag'].errors.required">
+						<strong>Please select Tag</strong>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<ng-multiselect-dropdown [placeholder]="'Choose Device'"
+					formControlName="devices" [data]="devicesDropdownList"
+					[settings]="devicesDropdownSettings"
+					(onSelect)="onItemSelect($event)"> </ng-multiselect-dropdown>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" readonly="readonly"
+					formControlName="language" placeholder="Language*"
+					(click)="getLanguage()" />
+				<div class="form-control form-control-danger"
+					*ngIf="!createStepForm.controls['language'].valid && createStepForm.controls['language'].touched ">
+					<strong>Please enter Language</strong>
+				</div>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control"
+					formControlName="architecture" [pattern]="regexPattern"
+					placeholder="Architecture" />
+			</div>
+			<div class="form-control form-control-danger"
+				*ngIf="createStepForm.controls['architecture'].errors?.pattern">
+				<strong>Use alphaNumeric characters, spaces and dashes(_,-)</strong>
+			</div>
+			<div class="form-group">
+				<div class="row">
+				<div class="col-11">
+					<tag-input formControlName="tags" theme='dark' clearOnBlur="true"
+					(onAdd)="onItemAdded($event)" (onRemove)="onItemRemoved($event)"></tag-input>
+				</div>
+				<div class="col-1">
+					<i class="ion-information-circled" style="font-size: 25px;" nbPopover="Tip: Press ENTER to add a tag" nbPopoverMode="hint"></i>
+				</div>
+			</div>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-outline-primary btn-sm"
+					(click)="argsToggle()">{{ argButtonText }}</button>
+			</div>
+			<div class="form-group" id="argsElement">
+				<div class="row" formArrayName="args">
+					<div class="col-md-12"
+						*ngFor="let address of getArgs(createStepForm) ; let i = index">
+						<div class="row">
+							<div class="col-md-11">
+								<span>Arg {{i+1}} </span>
+							</div>
+							<div class="col-md-1">
+								<span *ngIf="getArgs(createStepForm).length > 1"
+									(click)="removeArgs(i)" class="close">&times;</span>
+							</div>
+						</div>
+						<div [formGroupName]="i" class="row">
+							<div class="col-md-6">
+
+								<input type="text" class="form-control" formControlName="key"
+									placeholder="Key">
+
+							</div>
+							<div class="col-md-6">
+
+								<input type="text" class="form-control" formControlName="value"
+									placeholder="Value">
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<a (click)="addArgs()" class="point"> <strong> Add
+								another argument </strong>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="form-row">
+					<div class="col-6">
+						<button class="btn btn-hero-primary btn-block"
+							[disabled]="!createStepForm.valid" (click)="onCreateStep()">Create
+							Step</button>
+					</div>
+					<div class="col-6">
+						<button class="btn btn-hero-primary btn-block" (click)="onReset()">Reset
+						</button>
+					</div>
+				</div>
+			</div>
+			<ngx-ui-loader></ngx-ui-loader>
+		</form>
+		</nb-card-body> </nb-card>
+	</div>
+	<!-- <div class="col-lg-6">
+      <nb-card>
+          <nb-card-header>List of Steps</nb-card-header>
+          <nb-card-body>
+              <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                      <thead>
+                          <tr>
+                              <th></th>
+                              <th>Name</th>
+                              <th>Author</th>
+                              <th>Creation Date</th>
+                              <th>Capabilities</th>
+                              <th>Type</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td><a href="#"><i class="nb-edit"></i></a></td>
+                              <th class="text-nowrap" scope="row">Step N1</th>
+                              <td>Joh T.</td>
+                              <td>2018-09-01 11:38</td>
+                              <td>[123, 484]</td>
+                              <td>Type #00651</td>
+                          </tr>
+                          <tr>
+                              <td><a href="#"><i class="nb-edit"></i></a></td>
+                              <th class="text-nowrap" scope="row">Step N2</th>
+                              <td>Kristen Ashl</td>
+                              <td>2018-09-01 11:38</td>
+                              <td>[123]</td>
+                              <td>Type #00651</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </nb-card-body>
+      </nb-card>
+  </div> -->
+</div>

@@ -1,0 +1,48 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add New Capability</h4>
+    <button type="button" class="close" aria-label="Close" (click)="hideAddCapabilityModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="addCapabilityForm">
+      <div class="form-group">
+        <div>
+           <input type="text" class="form-control" formControlName="capabilityName" placeholder="Name*" />
+        </div>
+        <div class="form-control form-control-danger" *ngIf="!addCapabilityForm.controls['capabilityName'].valid 
+        && addCapabilityForm.controls['capabilityName'].touched " >
+          <strong>Please enter capability Name</strong> 
+        </div>
+      </div>
+        <div class="form-group">
+          <ng-multiselect-dropdown [placeholder]="'Choose Type*'" formControlName="capabilityType" 
+            [data]="capabilityTypeList" [settings]="dropdownSettings"
+            (onSelect)="onItemSelect($event)" >
+          </ng-multiselect-dropdown>
+        <div class="form-control form-control-danger" *ngIf="addCapabilityForm.controls['capabilityType'].invalid 
+          && (addCapabilityForm.controls['capabilityType'].dirty || addCapabilityForm.controls['capabilityType'].touched )" >
+            <div [hidden]="!addCapabilityForm.controls['capabilityType'].errors.required">
+              <strong>Please select capability Type</strong> 
+            </div>
+        </div> 
+      </div>      
+
+        <div class="form-group">
+          <div class="form-row">
+            <div class="col">
+                <button type="button" class="btn btn-hero-primary btn-block" [disabled]="!addCapabilityForm.valid" (click)="onSubmit()">Add</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-hero-primary btn-block" (click)="onReset()">Reset</button>
+            </div>
+          </div>
+         </div>
+         <ngx-ui-loader></ngx-ui-loader>
+    </form>    
+  </div>
+  
+</ng-template>
+
+<button class="btn btn-info btn-sm float-right" (click)="open(content)">Add new capability</button>

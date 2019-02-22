@@ -1,0 +1,39 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Choose Success or Failure Steps</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="pipelineModalForm">
+      <div class="form-group mb-4">
+        <ng-multiselect-dropdown  [placeholder]="'Choose Success Step (Optional)'" formControlName="successStep" [data]="successDropdownList"
+         [settings]="dropdownSettings" (onSelect)="onSuccessSelect($event)" (onDeSelect)="onSuccessRemove($event)">
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group mb-4">
+        <ng-multiselect-dropdown  [placeholder]="'Choose Failure Step (Optional)'" formControlName="failureStep" [data]="FailureDropdownList"
+         [settings]="dropdownSettings" (onSelect)="onFailureSelect($event)"  (onDeSelect)="onFailureRemove($event)">
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group mb-4">
+        <div class="form-row mb-4">
+          <div class="col">
+              <button type="button" class="btn btn-info btn-block my-4" [disabled]="pipelineModalForm.controls['successStep'].invalid && pipelineModalForm.controls['failureStep'].invalid"  (click)="onSubmit()">Save</button>
+          </div>
+          <div class="col">
+              <button type="button" class="btn btn-info btn-block my-4" (click)="onReset()">Reset</button>
+          </div>
+        </div>
+       </div>
+
+
+    </form>
+  </div>
+
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" hidden id="pipelineModal"  (click)="open(content)">Launch demo modal</button>
+
+
